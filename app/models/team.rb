@@ -1,3 +1,3 @@
 class Team < ApplicationRecord
-    has_one :standing
+  has_one :standing
 end
