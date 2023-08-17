@@ -19,5 +19,41 @@ def get_teams_info
     end
 end
 
-get_teams_info
+def get_standings
+    doc = Nokogiri::HTML(URI.open('https://www.mundodeportivo.com/resultados/futbol/laliga/clasificacion'))
 
+    standings_rows = doc.css('.table tr:not(.table-header)').collect
+
+    all_teams = Team.all
+
+    standings_rows.each do |team|
+
+        #img= team.css('td.tname div.tflex a img').attribute('src').value
+        name = team.css('td.tname div.tflex div.tflex__content p a').text
+
+        name_longest_part = name.split(' ').max_by(&:length)
+
+        pj = team.css('td:nth-child(2)').text
+        pg = team.css('td:nth-child(3)').text
+        pe = team.css('td:nth-child(4)').text
+        pp = team.css('td:nth-child(5)').text
+        gf = team.css('td:nth-child(6)').text
+        gc = team.css('td:nth-child(7)').text
+        pts = team.css('td:nth-child(8)').text
+
+        if name_longest_part == 'Madrid'
+            name_longest_part = 'Real Madrid'
+        end
+
+        team = all_teams.where("name LIKE ?", "%#{name_longest_part}%").first
+
+        Standing.create({
+  
+        })
+
+        puts "Standing for #{name} created"
+    end
+end
+
+get_teams_info
+get_standings
