@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  played: MyString
+  win: MyString
+  draw: MyString
+  lose: MyString
+  goals_for: MyString
+  goal_against: MyString
+  points: MyString
+  team: one
+
+two:
+  played: MyString
+  win: MyString
+  draw: MyString
+  lose: MyString
+  goals_for: MyString
+  goal_against: MyString
+  points: MyString
+  team: two
