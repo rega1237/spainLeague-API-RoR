@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  shield: MyString
+  stadium: MyString
+  year: MyString
+  president: MyString
+  site: MyString
+
+two:
+  name: MyString
+  shield: MyString
+  stadium: MyString
+  year: MyString
+  president: MyString
+  site: MyString
