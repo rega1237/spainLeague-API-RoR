@@ -48,7 +48,14 @@ def get_standings
         team = all_teams.where("name LIKE ?", "%#{name_longest_part}%").first
 
         Standing.create({
-  
+            team_id: team.id,
+            played: pj,
+            won: pg,
+            draw: pe,
+            lose: pp,
+            goals_for: gf,
+            goals_against: gc,
+            points: pts
         })
 
         puts "Standing for #{name} created"
