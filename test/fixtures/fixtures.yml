@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  matchday: MyString
+  hour: MyString
+  day: MyString
+  result: MyString
+  home: one
+  away: one
+  team: one
+
+two:
+  matchday: MyString
+  hour: MyString
+  day: MyString
+  result: MyString
+  home: two
+  away: two
+  team: two
