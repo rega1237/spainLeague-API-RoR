@@ -107,6 +107,8 @@ def get_fixtures
             if result_row.text.length > 5
                 result = result_row.text.strip.split(" ")
                 Fixture.create({
+                    home_name: home,
+                    away_name: away,
                     matchday: matchday,
                     home_id: team_home.id,
                     away_id: team_away.id,
@@ -118,6 +120,8 @@ def get_fixtures
                 puts "Fixture #{home} vs #{away} created"
             else
                 Fixture.create({
+                    home_name: home,
+                    away_name: away,
                     matchday: matchday,
                     home_id: team_home.id,
                     away_id: team_away.id,
