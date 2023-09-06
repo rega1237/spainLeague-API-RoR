@@ -136,6 +136,70 @@ def get_fixtures
     end
 end
 
-get_teams_info
-get_standings
-get_fixtures
+def get_players
+    urls = ["https://www.marca.com/resultados/futbol/alaves/plantilla/C173.html", "https://www.marca.com/resultados/futbol/almeria/plantilla/C1564.html", "https://www.marca.com/resultados/futbol/athletic/plantilla/C174.html", "https://www.marca.com/resultados/futbol/atletico/plantilla/C175.html",
+    "https://www.marca.com/resultados/futbol/barcelona/plantilla/C178.html", "https://www.marca.com/resultados/futbol/betis/plantilla/C185.html", "https://www.marca.com/resultados/futbol/cadiz/plantilla/C1737.html", "https://www.marca.com/resultados/futbol/celta/plantilla/C176.html", "https://www.marca.com/resultados/futbol/getafe/plantilla/C1450.html",
+    "https://www.marca.com/resultados/futbol/girona/plantilla/C2893.html", "https://www.marca.com/resultados/futbol/granada/plantilla/C5683.html", "https://www.marca.com/resultados/futbol/las-palmas/plantilla/C407.html", "https://www.marca.com/resultados/futbol/mallorca/plantilla/C181.html", "https://www.marca.com/resultados/futbol/osasuna/plantilla/C450.html",
+    "https://www.marca.com/resultados/futbol/rayo/plantilla/C184.html", "https://www.marca.com/resultados/futbol/r-madrid/plantilla/C186.html", "https://www.marca.com/resultados/futbol/r-sociedad/plantilla/C188.html", 
+    "https://www.marca.com/resultados/futbol/sevilla/plantilla/C179.html", "https://www.marca.com/resultados/futbol/valencia/plantilla/C191.html", "https://www.marca.com/resultados/futbol/villarreal/plantilla/C449.html"]
+
+    urls.each do |url|
+        doc = Nokogiri::HTML(URI.open(url))
+        players = doc.css("ul.ue-c-sports-card-list li").collect
+
+        team_name = doc.css("div.ue-c-section__bar-headline div#ID_title_menu_local").text.strip
+
+        name_longest_part_team = team_name.split(' ').max_by(&:length)
+
+        if name_longest_part_team == 'Madrid'
+            name_longest_part_team = 'Real Madrid'
+        end
+
+        all_teams = Team.all
+
+        team = all_teams.where("name LIKE ?", "%#{name_longest_part_team}%").first
+
+        puts team.name
+
+        players.each do |player|
+            photo = player.css("article div.ue-c-sports-card__media img").attribute('src').value
+            name = player.css("article div.ue-c-sports-card__title-group h3").text.strip
+            number = player.css("article div.ue-c-sports-card__title-group span").text.strip
+            position = player.css("article div.ue-c-sports-card__headline span.ue-c-sports-card__subtitle").text.strip
+            
+            if position == "Portero"
+                position = "Goalkeeper"
+            elsif position == "Defensa Central"
+                position = "Center Back"
+            elsif position == "Lateral" || position == "Lateral izquierdo" || position == "Lateral derecho" || position == "Carrilero"
+                position = "Outside Back"
+            elsif position == "Mediocentro" || position == "Centrocampista"
+                position = "Midfielder"
+            elsif position == "Mediocentro defensivo"
+                position = "Defensive Midfielder"
+            elsif position == "Mediocentro ofensivo" || position == "Mediapunta"
+                position = "Attacking Midfielder"
+            elsif position == "Extremo"
+                position = "Winger"
+            elsif position == "Segundo delantero"
+                position = "Second Striker"
+            elsif position == "Delantero centro"
+                position = "Striker"
+            end
+
+            Player.create({
+                name: name,
+                number: number,
+                position: position,
+                photo: photo,
+                short_team: team_name,
+                team_id: team.id
+            })
+        end
+    end
+end
+
+#get_teams_info
+#get_standings
+#get_fixtures
+get_players
